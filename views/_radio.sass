@@ -1,0 +1,63 @@
+form
+  margin: 0 0 10px 0
+
+fieldset
+  border: 0
+
+.radiolist
+  list-style: none
+  margin: 0
+  padding: 0
+
+.radiolist li
+  float: left
+  margin: 5px
+  background: url(images/use_2_radiobg.gif) no-repeat 0 0
+  width: 100px
+  height: 94px
+  position: relative
+
+.radiolist li.selected
+  background-position: -100px 0
+
+.radiolist li.selected .rudiobox-select
+  display: none
+
+.radiobox-select
+  display: block
+  float: left
+  position: absolute
+  top: 65px
+  left: 10px
+  width: 80px
+  height: 18px
+  background: url(images/use_2_select.gif) no-repeat 0 0
+  text-indent: -9999px
+
+.radiolist li input
+  display: none
+
+a.radiobox-deselect
+  display: none
+  float: left
+  position: absolute
+  top: 65px
+  left: 10px
+  width: 80px
+  height: 18px
+  background: url(images/use_2_deselect.gif) no-repeat 0 0
+  text-indent: -9999px
+
+.radiolist li.selected a.radiobox-deselect
+  display: block
+
+.radiolist li label
+  display: block
+  text-align: center
+  padding: 8px
+.radiobox
+  text-align: center
+
+.radiobox-color-name
+  margin: 5px 0 10px 0
+

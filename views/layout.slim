@@ -1,0 +1,76 @@
+! doctype html
+html dir="ltr" lang="ja" xml:lang="ja" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#"
+  head
+    meta http-equiv='Content-Type' content='text/html; charset=utf-8'
+    meta http-equiv='Content-Style-Type' content='text/css'
+    meta http-equiv='Content-Script-Type' content='text/javascript'
+    title = "はてなスターカウンター"
+    meta property='og:title' content='はてなスターカウンター'
+    meta property='og:url' content='http://hatenastar.heroku.com/'
+    meta property='og:image' content='http://hatenastar.heroku.com/counters/de/0123.gif'
+    meta property='og:type' content='website'
+    meta property='og:description' content='はてなスターカウンターは、あなたのブログに付けられた「はてなスターの数」を表示できるサービスです。'
+    meta property='og:site_name' content='はてなスターカウンター'
+    link type='text/css' href='/style.css' rel='stylesheet'
+    link type='image/vnd.microsoft.icon' href='favicon.ico' rel='shortcut icon'
+    link type='image/vnd.microsoft.icon' href='favicon.ico' rel='icon'
+    script type='text/javascript' src='/javascripts/jquery-1.5.0.min.js'
+    script type='text/javascript' src='/javascripts/jquery.socialbutton-1.7.3.js?nocache'
+    script type='text/javascript' src='http://s.hatena.ne.jp/js/HatenaStar.js'
+    javascript:
+      Hatena.Star.EntryLoader.headerTagAndClassName = ['h3', 'hatenastar-button'];
+    script type='text/javascript' src='http://www.go2web20.net/twitterfollowbadge/1.0/badge.js'
+    script type='text/javascript' charset='utf-8'
+    javascript:
+      $(function() {
+        $('#hatena').socialbutton('hatena', { url: 'http://hatenastar.heroku.com/' });
+        $('#twitter').socialbutton('twitter', { button: 'horizontal', url: 'http://hatenastar.heroku.com/', lang: 'ja', related: 'ruedap' });
+        $('#facebook_like').socialbutton('facebook_like', { button: 'button_count', url: 'http://hatenastar.heroku.com/', locale: 'ja_JP' });
+      });
+  body
+    a name='top'
+    div id='wrap'
+      h1
+        a id='logo' href='/'
+          img id='logo-img' src='/images/logo.gif' title="HATENA STAR COUNTER" alt="HATENA STAR COUNTER"
+        h2 id='logo-caption'
+          img src='/images/logo_caption.gif' alt='はてなスターカウンターは、あなたのブログに付けられた「はてなスターの数」を表示できるサービスです。' title='はてなスターカウンターは、あなたのブログに付けられた「はてなスターの数」を表示できるサービスです。'
+        div id='socialbuttons'
+          div id='socialbuttons-wrapper'
+            div id='hatena'
+            div id='twitter'
+            div id='facebook_like'
+          div id='hatenastar-counter-wrapper'
+            img src='/images/thisis.gif' alt='これです' title='これです'
+            a href="http://hatenastar.heroku.com/" target="_blank"
+              img src="http://hatenastar.heroku.com/sc/de/http://hatenastar.heroku.com/" alt="はてなスターカウンター" title="はてなスターカウンター"
+          div class='clear'
+        div id='hatenastar-wrapper'
+          div class='float-left'
+          div class='float-right'
+            h3 class='hatenastar-button'
+              a id='hatenastar-button-text' href="http://hatenastar.heroku.com/" target="_blank" はてなスターカウンター
+          div class='clear'
+      == yield
+      div id='footer'
+        a href='http://twitter.com/ruedap' target='_blank'
+          img src='/images/footer.gif' alt='Powered by Heroku, Sinatra, Slim, Sass and Ruby. Created by @ruedap' title='Powered by Heroku, Sinatra, Slim, Sass and Ruby. Created by @ruedap'
+          br
+    javascript:
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', "#{@google_analytics_id}"]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    javascript:
+      tfb.account = 'ruedap';
+      tfb.label = 'follow-me';
+      tfb.color = '#2A67B0';
+      tfb.side = 'r';
+      tfb.top = 50;
+      tfb.showbadge();
+

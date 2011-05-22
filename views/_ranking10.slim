@@ -1,0 +1,26 @@
+/ ランキング10
+- unless @stars.empty?
+  a name='ranking'
+  div id='ranking' style='margin-bottom: 30px'
+    img src='/images/ranking.gif' alt='RANKING' title='RANKING'
+  / ランク
+  div class='wrapper'
+    div class='container'
+      img class='ranking-text-image' src='/images/ranking_text_top10.gif' alt='はてなスターカウンター利用サイトの中でのスター数TOP10' title='はてなスターカウンター利用サイトの中でのスター数TOP10'
+      - @stars.each_with_index do |star, i|
+        div class='rank-wrapper'
+          div class='float-left'
+            img class='rank-image' src="/images/rank_#{i+1}.gif" alt="#{i+1}" title="#{i+1}"
+          div class='float-right'
+            div class='rank-text-wrapper'
+              a href="#{star.uri}" target='_blank' = star.title
+              |  [
+              span class='bold' #{star.star_count}
+              ' stars]
+          div class='clear'
+      div class='center' style='color: #444; font-size: 0.8em; margin: 20px 0 8px 0; line-height: 1.4em;'
+        ' ランキングに表示されるブログ名が古い場合の変更方法は 
+        a href='http://d.hatena.ne.jp/ruedap/20110424/hatenastar_counter_ranking_blog_title_rename' style='color: #369;' target='_blank' こちら
+        br
+        | カウンターの利用サイトが100サイトを超え次第、スター数TOP100を公開予定
+    div class='clear'

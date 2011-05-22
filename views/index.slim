@@ -1,0 +1,265 @@
+javascript:
+  new Image().src = '/images/use_2_deselect.gif'
+  function validateAndUpdate() {
+    var use_3_result_text = '';
+    if (!hsc.input_url_valid) {
+      use_3_result_text += '<span class="invalid-text-color">ステップ1: URLの入力が正しく実行されていません。<br></span>';
+    }
+    if (!hsc.select_color_valid) {
+      use_3_result_text += '<span class="invalid-text-color">ステップ2: 色の選択が正しく実行されていません。<br></span>';
+    }
+    if (hsc.input_url_valid && hsc.select_color_valid) {
+      var html_code = '<textarea onclick="this.select();" id="codebox" rows="7" style="display: inline;"></textarea>';
+      $('#use-3-result-text').empty().html(html_code).show();
+      updateCode();
+    } else {
+      $('#use-3-result-text').empty().append(use_3_result_text).show();
+    }
+  }
+  function updateCode() {
+    var codeStr = '<!-- HATENA STAR COUNTER by @ruedap -->\n';
+    codeStr += '<a href="http://hatenastar.heroku.com/" target="_blank"><img src="http://hatenastar.heroku.com/sc/' + hsc.select_color + '/' + hsc.input_url + '" alt="はてなスターカウンター" title="はてなスターカウンター"></a>';
+    codeStr += '\n<!-- end of HATENA STAR COUNTER -->\n';
+    $('#codebox').val(codeStr);
+  }
+  function use1HatenaStarAPISubmit() {
+    hsc.input_url = $('#input_url').val();
+    hsc.input_url_valid = false;
+    $.ajax({
+      scriptCharset: 'utf-8',
+      type: 'GET',
+      url: 'http://s.hatena.ne.jp/blog.json/' + hsc.input_url + '?callback=?',
+      data: {
+        'output' : 'json',
+      },
+      timeout: 500,
+      success: function(json, status) {
+        var txt = 'はてなスター数の取得に成功しました。ステップ2に進んでください。<br>このURLのスター数は「<span class="bold">' + json.star_count + '</span>」です。<br>このURLのタイトルは「<span class="bold">' + json.title + '</span>」です。';
+        use1DisplayResult(true, txt);
+      },
+      error: function(xhr, status, e) {
+        var txt = '<span class="invalid-text-color">はてなスター数の取得に失敗しました。以下について確認してください。<br>・入力したURLは、正しいですか？<br>・入力したURLは、最後にスラッシュが付いていますか？<br>・入力したURLは、<a href="http://s.hatena.ne.jp/guide" target="_blank" class="bold">はてなスターを付けられる</a>ようになっていますか？</span>';
+        use1DisplayResult(false, txt);
+      },
+      dataType: "json"
+    });
+  }
+  function use1DisplayResult(input_url_valid, txt) {
+    if (hsc.use1_result_visibule) {
+      $('#use-1-result-text').slideUp(10).empty().append(txt).slideDown(400);
+    } else {
+      $('#use-1-result-text').empty().append(txt).slideDown(400);
+    }
+    hsc.input_url_valid = input_url_valid;
+    hsc.use1_result_visibule = true;
+    validateAndUpdate();
+  }
+  $(document).ready(function() {
+    hsc = {};
+    validateAndUpdate();
+    hsc.use1_result_visibule = false;
+    var input_url_place_text = 'ここにURLを入力して、下のボタンを押してください';
+    $('#input_url').val(input_url_place_text);
+    $('#input_url')
+      .focus(function() {
+        var self = $(this);
+        if (self.val() === input_url_place_text) self.val('');
+      })
+      .blur(function() {
+        var self = $(this);
+        if (self.val() === '') self.val(input_url_place_text);
+      });
+    $('#use-1-result-text').hide();
+    $('#input_url').keypress(function (e) { // Enterキーで送信の場合
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+          use1HatenaStarAPISubmit();
+        }
+    });
+    $('#use-1-button').click(function() { // ボタンで送信の場合
+      use1HatenaStarAPISubmit();
+    });
+  });
+a name='use'
+div id='use'
+  img src='/images/use.gif' alt='HOW TO USE' title='HOW TO USE'
+div id='use-1'
+  img src='/images/use_1.gif' alt='1. URLを入力してください' title='1. URLを入力してください'
+div class='wrapper'
+  div class='container'
+    img class='use-text-image' src='/images/use_1_text.gif' alt='カウンターを設置するブログまたはサイトのURLを入力してください' title='カウンターを設置するブログまたはサイトのURLを入力してください'
+    br
+    /form action='' class='center'
+    input id='input_url' type='text' name='url' size=70
+    br
+    input type='hidden' name='_method' value='put'
+    input id='use-1-button' type='image' src="images/use_1_button_off.gif" name='submit' value='submit' alt='はてなスター数を取得する' title='はてなスター数を取得する'
+    br
+    div id='use-1-result-text'
+  div class='clear'
+/div id='use_1_next_arrow'
+  img src='/images/next_arrow.gif'
+javascript:
+  function getColorNameText(colorName) {
+    if (colorName == 'de') { colorNameString = '標準'; }
+    else if (colorName == 'dg') { colorNameString = 'グレー'; }
+    else if (colorName == 'gr') { colorNameString = '緑'; }
+    else if (colorName == 'pr') { colorNameString = '紫'; }
+    else if (colorName == 'br') { colorNameString = '茶'; }
+    else if (colorName == 'rd') { colorNameString = '赤'; }
+    else if (colorName == 'sp') { colorNameString = 'セピア'; }
+    else if (colorName == 'pk') { colorNameString = 'ピンク'; }
+    else if (colorName == 'te') { colorNameString = '抹茶'; }
+    else if (colorName == 'lg') { colorNameString = 'ライトグレー'; }
+    else if (colorName == 'lb') { colorNameString = 'ライトブルー'; }
+    else if (colorName == 'wh') { colorNameString = '白'; }
+    else if (colorName == 'bl') { colorNameString = '黒'; }
+    else if (colorName == 'li') { colorNameString = 'ライム'; }
+    else if (colorName == 'or') { colorNameString = 'オレンジ'; }
+    return '「<span class="bold">' + colorNameString + '</span>」の色を選択しました。ステップ3に進んでください。';
+  }
+  $(document).ready(function() {
+    $('.radiolist :radio').parent().removeClass('selected');
+    $('.radiolist :radio').parent().find(':radio').removeAttr('checked');
+    $('#use-2-result-text').empty().hide();
+    hsc.select_color_valid = false;
+    /* handle the user selections */
+    $('.radiolist .radiobox-select').click(function(event) {
+      event.preventDefault();
+      $('.radiolist input:checked').parent().removeClass('selected');
+      $('.radiolist input:checked').parent().find(':radio').removeAttr('checked');
+      $(this).parent().addClass('selected');
+      $(this).parent().find(':radio').attr('checked','checked');
+      hsc.select_color = $(this).parent().find(':radio').val();
+      var txt = getColorNameText(hsc.select_color);
+      $('#use-2-result-text').empty().append(txt).slideDown(400);
+      hsc.select_color_valid = true;
+      validateAndUpdate();
+    });
+    $('.radiolist .radiobox-deselect').click(function(event) {
+      event.preventDefault();
+      $(this).parent().removeClass('selected');
+      $(this).parent().find(':radio').removeAttr('checked');
+      $('#use-2-result-text').empty().hide();
+      hsc.select_color = null;
+      hsc.select_color_valid = false;
+      validateAndUpdate();
+    });
+  });
+div id='use-2'
+  img src='/images/use_2.gif' alt='2. お好きな色を選んでください' title='2. お好きな色を選んでください'
+div class='wrapper'
+  div class='container'
+    img class='use-text-image' src='/images/use_2_text.gif' alt='15種類の中からお好きな色のカウンターを選んでください' title='15種類の中からお好きな色のカウンターを選んでください'
+    br
+    form action=''
+      ul class='radiolist'
+        li class='radiobox'
+          input name='radiobox' value='de' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_de.gif' alt='標準' title='標準'
+          img class='radiobox-sample' src='counters/de/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='dg' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_dg.gif' alt='グレー' title='グレー'
+          img class='radiobox-sample' src='counters/dg/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='gr' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_gr.gif' alt='緑' title='緑'
+          img class='radiobox-sample' src='counters/gr/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='pr' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_pr.gif' alt='紫' title='紫'
+          img class='radiobox-sample' src='counters/pr/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='br' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_br.gif' alt='茶' title='茶'
+          img class='radiobox-sample' src='counters/br/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+      ul class='radiolist'
+        li class='radiobox'
+          input name='radiobox' value='rd' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_rd.gif' alt='赤' title='赤'
+          img class='radiobox-sample' src='counters/rd/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='sp' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_sp.gif' alt='セピア' title='セピア'
+          img class='radiobox-sample' src='counters/sp/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='pk' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_pk.gif' alt='ピンク' title='ピンク'
+          img class='radiobox-sample' src='counters/pk/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='te' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_te.gif' alt='抹茶' title='抹茶'
+          img class='radiobox-sample' src='counters/te/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='lg' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_lg.gif' alt='ライトグレー' title='ライトグレー'
+          img class='radiobox-sample' src='counters/lg/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+      ul class='radiolist'
+        li class='radiobox'
+          input name='radiobox' value='lb' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_lb.gif' alt='ライトブルー' title='ライトブルー'
+          img class='radiobox-sample' src='counters/lb/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='wh' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_wh.gif' alt='白' title='白'
+          img class='radiobox-sample' src='counters/wh/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='bl' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_bl.gif' alt='黒' title='黒'
+          img class='radiobox-sample' src='counters/bl/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='li' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_li.gif' alt='ライム' title='ライム'
+          img class='radiobox-sample' src='counters/li/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        li class='radiobox'
+          input name='radiobox' value='or' type='radio'
+          img class='radiobox-color-name' src='images/use_2_color_name_or.gif' alt='オレンジ' title='オレンジ'
+          img class='radiobox-sample' src='counters/or/0123.gif'
+          a class='radiobox-select' href='#'
+          a class='radiobox-deselect' href='#'
+        div class='clear'
+    br
+    div id='use-2-result-text'
+  div class='clear'
+div id='use-3'
+  img src='/images/use_3.gif' alt='3. あなたのブログに貼り付けてください' title='3. あなたのブログに貼り付けてください'
+div class='wrapper'
+  div class='container'
+    img class='use-text-image' src='/images/use_3_text.gif' alt='このHTMLコードをあなたのブログまたはサイトに貼り付けてください' title='このHTMLコードをあなたのブログまたはサイトに貼り付けてください'
+    br
+    div id='use-3-result-text'
+  div style='margin-top: 5px' class='clear'
+div class='clear'
+div id='use-finish'
+  img src='/images/use_finish.gif' alt='FINISH!' title='FINISH!'
+  br
+== slim :_ranking10
+== slim :_faq

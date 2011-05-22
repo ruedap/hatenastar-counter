@@ -1,0 +1,12 @@
+.DS_Store
+/.bundle
+/.sass-cache
+/log
+/material
+/vendor
+/*.sqlite3
+/db/*.sqlite3
+/*.db
+/db/*.db
+/tmp/*
+
